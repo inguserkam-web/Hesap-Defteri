@@ -82,3 +82,16 @@ label { display: block; font-size: 14px; color: var(--soluk); margin: 10px 0 4px
 .uyari { background: #fff6e0; color: #7a5a00; border-radius: 10px; padding: 10px 12px; font-size: 14px; margin-bottom: 12px; }
 .hata { background: #fbeaea; color: var(--kirmizi); border-radius: 10px; padding: 10px 12px; font-size: 14px; margin-bottom: 12px; }
 .liste-ogesi { cursor: pointer; }
+.cipler { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
+.cip { background: #e6edf5; color: var(--ana-koyu); padding: 9px 13px; border-radius: 99px; font-weight: 500; font-size: 15px; }
+.cip.secili { background: var(--ana); color: #fff; }
+.grup-baslik { font-size: 13px; font-weight: 700; color: var(--ana-koyu); margin: 14px 4px 6px; }
+.tablo { padding: 4px 14px; }
+.tablo > .satir { padding: 10px 0; border-bottom: 1px solid var(--cizgi); }
+.tablo > .satir:last-child { border-bottom: 0; }
+button.kucuk { padding: 5px 10px; font-size: 13px; text-transform: none; letter-spacing: 0; }
+.onay { display: flex !important; gap: 10px; align-items: center; color: inherit !important; margin-top: 14px !important; font-size: 16px !important; }
+.cubuk { height: 8px; background: var(--cizgi); border-radius: 99px; overflow: hidden; margin-top: 6px; }
+.cubuk > div { height: 100%; background: var(--ana); border-radius: 99px; }
+.hizli { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
+.hizli button { padding: 10px 4px; font-size: 14px; }
