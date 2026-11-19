@@ -1,0 +1,84 @@
+:root {
+  --ana: #1f4e79;
+  --ana-koyu: #173b5c;
+  --zemin: #f3f5f8;
+  --kart: #ffffff;
+  --yazi: #1d2421;
+  --soluk: #6b7570;
+  --cizgi: #e0e6ee;
+  --kirmizi: #c0392b;
+  --yesil: #2e7d32;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--zemin);
+  color: var(--yazi);
+  font-size: 16px;
+  -webkit-tap-highlight-color: transparent;
+}
+header {
+  position: sticky; top: 0; z-index: 5;
+  background: var(--ana); color: #fff;
+  padding: 14px 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+header h1 { font-size: 19px; margin: 0; flex: 1; font-weight: 600; }
+header button { background: transparent; color: #fff; border: 0; font-size: 15px; padding: 6px; }
+main { padding: 14px; max-width: 640px; margin: 0 auto; padding-bottom: 96px; }
+.kart {
+  background: var(--kart); border-radius: 14px; padding: 14px;
+  margin-bottom: 12px; box-shadow: 0 1px 2px rgba(0,0,0,.06);
+}
+.satir { display: flex; align-items: center; gap: 10px; }
+.esnek { flex: 1; min-width: 0; }
+.soluk { color: var(--soluk); font-size: 14px; }
+.kalin { font-weight: 600; }
+.sag { text-align: right; }
+.tutar { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.eksi { color: var(--kirmizi); }
+.arti { color: var(--yesil); }
+h2 { font-size: 15px; color: var(--soluk); font-weight: 600; margin: 18px 4px 8px; text-transform: uppercase; letter-spacing: .03em; }
+button, .dugme {
+  font: inherit; border: 0; border-radius: 10px; padding: 12px 16px;
+  background: var(--ana); color: #fff; font-weight: 600; cursor: pointer;
+}
+button.ikincil { background: #e6edf5; color: var(--ana-koyu); }
+button.tehlike { background: #fbeaea; color: var(--kirmizi); }
+button.tam { width: 100%; }
+button:disabled { opacity: .5; }
+input, select, textarea {
+  font: inherit; width: 100%; padding: 11px 12px; border-radius: 10px;
+  border: 1px solid var(--cizgi); background: #fff; color: var(--yazi);
+}
+label { display: block; font-size: 14px; color: var(--soluk); margin: 10px 0 4px; }
+.yuzen {
+  position: fixed; right: 18px; bottom: 22px; z-index: 6;
+  width: 58px; height: 58px; border-radius: 50%; font-size: 30px; padding: 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,.2);
+}
+.bos { text-align: center; color: var(--soluk); padding: 30px 10px; }
+.giris { text-align: center; padding-top: 18vh; }
+.giris img { width: 96px; height: 96px; border-radius: 22px; }
+.giris h1 { font-size: 24px; margin: 18px 0 6px; }
+.giris p { color: var(--soluk); margin: 0 0 28px; }
+.kutu { width: 24px; height: 24px; flex: none; accent-color: var(--ana); }
+.alindi .ad { text-decoration: line-through; color: var(--soluk); }
+.rozet { display: inline-block; font-size: 12px; padding: 2px 8px; border-radius: 99px; background: #e6edf5; color: var(--ana-koyu); }
+.sekmeler { display: flex; gap: 6px; margin-bottom: 12px; }
+.sekmeler button { flex: 1; background: #e6edf5; color: var(--ana-koyu); padding: 10px 6px; }
+.sekmeler button.secili { background: var(--ana); color: #fff; }
+/* alt pencere */
+.perde { position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 10; display: flex; align-items: flex-end; justify-content: center; }
+.pencere { background: #fff; width: 100%; max-width: 640px; border-radius: 18px 18px 0 0; padding: 18px 16px 24px; max-height: 90vh; overflow: auto; }
+.pencere h3 { margin: 0 0 6px; font-size: 18px; }
+.dugmeler { display: flex; gap: 10px; margin-top: 16px; }
+.dugmeler button { flex: 1; }
+.secenekler { display: flex; gap: 8px; }
+.secenekler button { flex: 1; background: #e6edf5; color: var(--ana-koyu); }
+.secenekler button.secili { background: var(--ana); color: #fff; }
+.toplam { font-size: 26px; font-weight: 700; }
+.uyari { background: #fff6e0; color: #7a5a00; border-radius: 10px; padding: 10px 12px; font-size: 14px; margin-bottom: 12px; }
+.hata { background: #fbeaea; color: var(--kirmizi); border-radius: 10px; padding: 10px 12px; font-size: 14px; margin-bottom: 12px; }
+.liste-ogesi { cursor: pointer; }
