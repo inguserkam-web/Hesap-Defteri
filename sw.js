@@ -1,5 +1,5 @@
 // Uygulama dosyalarını önbelleğe alır; internet yokken de açılır.
-const ONBELLEK = "hesap-defteri-v2";
+const ONBELLEK = "hesap-defteri-v4";
 const DOSYALAR = ["./", "index.html", "style.css", "app.js", "firebase-config.js", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png"];
 self.addEventListener("install", (e) => { e.waitUntil(caches.open(ONBELLEK).then((c) => c.addAll(DOSYALAR))); self.skipWaiting(); });
 self.addEventListener("activate", (e) => {

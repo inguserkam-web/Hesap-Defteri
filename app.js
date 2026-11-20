@@ -89,7 +89,7 @@ onAuthStateChanged(auth, (u) => {
       .sort((a, b) => String(b.tarih).localeCompare(String(a.tarih)) || (b.olusturma?.seconds ?? 9e9) - (a.olusturma?.seconds ?? 9e9));
     yuklendi.islemler = true; sonra();
   }, hataYakala));
-  dinleyiciler.push(onSnapshot(collection(db, "defterKategorileri"), (s) => {
+  dinleyiciler.push(onSnapshot(collection(db, "defterKategorileri"), { includeMetadataChanges: true }, (s) => {
     kategoriler = s.docs.map((d) => ({ id: d.id, ...d.data() }));
     yuklendi.kategoriler = true;
     if (!s.metadata?.fromCache) tohumla(); // önbellekten gelen boş liste yanıltmasın
@@ -132,7 +132,7 @@ function cizGiris() {
     <main class="giris">
       <img src="icons/icon-192.png" alt="">
       <h1>Hesap Defteri</h1>
-      <p>Gelir, gider, hesaplar ve kartlar</p>
+      <p>Gelir, gider, hesaplar ve kartlar</p><p class="soluk" style="font-size:12px">Sürüm 4</p>
       <button id="giris">Google ile giriş yap</button>
     </main>`;
   document.getElementById("giris").onclick = girisYap;
