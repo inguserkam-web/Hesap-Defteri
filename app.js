@@ -66,6 +66,7 @@ let hata = "";
 let dinleyiciler = [];
 let tohumlandi = false;
 const yaziliyor = new Set();
+let alisverisSunucudan = false;
 
 // ---------- Giriş ----------
 onAuthStateChanged(auth, (u) => {
@@ -95,9 +96,11 @@ onAuthStateChanged(auth, (u) => {
     if (!s.metadata?.fromCache) tohumla(); // önbellekten gelen boş liste yanıltmasın
     sonra();
   }, hataYakala));
-  dinleyiciler.push(onSnapshot(query(collection(db, "alisveris"), where("durum", "==", "bitti")), (s) => {
+  dinleyiciler.push(onSnapshot(query(collection(db, "alisveris"), where("durum", "==", "bitti")), { includeMetadataChanges: true }, (s) => {
     alisverisler = s.docs.map((d) => ({ id: d.id, ...d.data() }));
-    yuklendi.alisveris = true; sonra();
+    yuklendi.alisveris = true;
+    alisverisSunucudan = !s.metadata?.fromCache;
+    sonra();
   }, hataYakala));
   ciz();
 });
@@ -132,7 +135,7 @@ function cizGiris() {
     <main class="giris">
       <img src="icons/icon-192.png" alt="">
       <h1>Hesap Defteri</h1>
-      <p>Gelir, gider, hesaplar ve kartlar</p><p class="soluk" style="font-size:12px">Sürüm 4</p>
+      <p>Gelir, gider, hesaplar ve kartlar</p><p class="soluk" style="font-size:12px">Sürüm 5</p>
       <button id="giris">Google ile giriş yap</button>
     </main>`;
   document.getElementById("giris").onclick = girisYap;
@@ -181,6 +184,7 @@ const katListesi = (tur) => kategoriler.filter((k) => k.tur === tur).sort((a, b)
 const odemeTuru = (o) => o === "nakit" ? "nakit" : o === "kredi" ? "kredi" : "banka";
 function bekleyenAlisverisler() {
   const aktarilan = new Set(islemler.map((i) => i.alisverisId).filter(Boolean));
+  // Kaynağı silindiği için kaldırılmış giderler yeniden bitirilince tekrar canlanır (aşağıda).
   return alisverisler.filter((a) => !aktarilan.has(a.id) && sayi(a.toplam) > 0);
 }
 function alisverisleriAktar() {
@@ -191,12 +195,26 @@ function alisverisleriAktar() {
     yaziliyor.add(a.id);
     const tarih = a.bitis?.seconds ? gun(a.bitis.seconds * 1000) : bugun();
     setDoc(doc(db, "islemler", "alis_" + a.id), {
-      tur: "gider", tutar: sayi(a.toplam), hesapId: h.id, tarih, taksit: 1,
+      tur: "gider", tutar: sayi(a.toplam), kaynakToplam: sayi(a.toplam), hesapId: h.id, tarih, taksit: 1,
       kategori: ALISVERIS_KATEGORI[a.magazaTur] || "Market",
       aciklama: a.magazaAd ? `${a.magazaAd} alışverişi` : (a.ad || "Alışveriş"),
       kaynak: "alisveris", alisverisId: a.id, odeme: a.odeme || "",
       olusturma: serverTimestamp()
     }).catch((e) => console.error(e)).finally(() => yaziliyor.delete(a.id));
+  }
+  // Alışveriş silindi ya da yeniden açıldıysa gideri kaldır; tekrar bitirildiyse geri getir ve tutarı güncelle.
+  if (!alisverisSunucudan) return;
+  const bitenler = new Map(alisverisler.map((a) => [a.id, a]));
+  for (const i of islemler) {
+    if (i.kaynak !== "alisveris" || !i.alisverisId || yaziliyor.has("g_" + i.id)) continue;
+    const a = bitenler.get(i.alisverisId);
+    let deg = null;
+    if (!a && !i.iptal) deg = { iptal: true, iptalSebebi: "kaynak" };
+    else if (a && i.iptal && i.iptalSebebi === "kaynak") deg = { iptal: false, iptalSebebi: "", tutar: sayi(a.toplam), kaynakToplam: sayi(a.toplam) };
+    else if (a && !i.iptal && i.kaynakToplam !== undefined && sayi(a.toplam) !== sayi(i.kaynakToplam)) deg = { tutar: sayi(a.toplam), kaynakToplam: sayi(a.toplam) };
+    if (!deg) continue;
+    yaziliyor.add("g_" + i.id);
+    updateDoc(doc(db, "islemler", i.id), deg).catch((e) => console.error(e)).finally(() => yaziliyor.delete("g_" + i.id));
   }
 }
 
